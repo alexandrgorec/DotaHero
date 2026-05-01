@@ -116,6 +116,21 @@
     "image": "/assets/heroes/antimage.png",
     "abilities": [
       {
+        "id": "antimage_mana_break",
+        "name": "Mana Break",
+        "image": "/assets/abilities/antimage_mana_break.png"
+      },
+      {
+        "id": "antimage_blink",
+        "name": "Blink",
+        "image": "/assets/abilities/antimage_blink.png"
+      },
+      {
+        "id": "antimage_counterspell",
+        "name": "Counterspell",
+        "image": "/assets/abilities/antimage_counterspell.png"
+      },
+      {
         "id": "antimage_mana_void",
         "name": "Mana Void",
         "image": "/assets/abilities/antimage_mana_void.png"

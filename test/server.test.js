@@ -35,6 +35,10 @@ test("GET /api/heroes returns a non-empty hero list", async () => {
   const heroes = await response.json();
   assert.ok(Array.isArray(heroes));
   assert.ok(heroes.length > 0);
+  assert.ok(
+    heroes.some((hero) => Array.isArray(hero.abilities) && hero.abilities.length > 0),
+    "At least one hero should contain abilities"
+  );
 
   for (const hero of heroes) {
     assert.equal(typeof hero.id, "string");

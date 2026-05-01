@@ -93,7 +93,7 @@ async function downloadAsset(outputPath, remoteImagePath) {
 
   try {
     await fs.access(outputPath);
-    return;
+    return true;
   } catch {
     // File is missing, continue with download.
   }
