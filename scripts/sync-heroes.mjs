@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import https from "https";
 import path from "path";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -129,7 +129,7 @@ async function downloadAbilityImage(abilityId, remoteImagePath) {
   return downloadAsset(outputPath, remoteImagePath);
 }
 
-async function main() {
+export async function main() {
   await ensureDir(dataDir);
   await ensureDir(publicHeroesDir);
   await ensureDir(publicAbilitiesDir);
@@ -221,7 +221,11 @@ async function main() {
   console.log(`Saved ${heroes.length} heroes to ${heroesFile}`);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+const executedAsScript = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (executedAsScript) {
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}

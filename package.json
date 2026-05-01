@@ -4,6 +4,8 @@
   "description": "Client-server app for choosing Dota 2 heroes.",
   "main": "server.js",
   "scripts": {
+    "postinstall": "node scripts/ensure-hero-data.mjs",
+    "prestart": "node scripts/ensure-hero-data.mjs",
     "start": "node server.js",
     "sync:heroes": "node scripts/sync-heroes.mjs",
     "test": "node --test"
