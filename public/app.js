@@ -279,10 +279,17 @@ function renderHeroDetail(hero) {
   copy.className = "selected-hero-copy";
   detailHeroTitle.textContent = hero.nameRu;
 
-  if (Array.isArray(hero.abilities) && hero.abilities.length) {
-    const abilitiesRow = document.createElement("div");
-    abilitiesRow.className = "hero-abilities-row";
+  const interactionRow = document.createElement("div");
+  interactionRow.className = "hero-interaction-row";
 
+  const controlsLeft = document.createElement("div");
+  controlsLeft.className = "hero-controls-left";
+  controlsLeft.append(backButton, hardcoreButton);
+
+  const abilitiesZone = document.createElement("div");
+  abilitiesZone.className = "hero-abilities-zone";
+
+  if (Array.isArray(hero.abilities) && hero.abilities.length) {
     const abilitiesList = document.createElement("div");
     abilitiesList.className = "hero-abilities";
     abilitiesList.setAttribute("aria-label", `Способности героя ${hero.nameRu}`);
@@ -291,9 +298,11 @@ function renderHeroDetail(hero) {
       abilitiesList.appendChild(createAbilityCard(ability, index));
     });
 
-    abilitiesRow.append(abilitiesList, hintButton);
-    copy.appendChild(abilitiesRow);
+    abilitiesZone.appendChild(abilitiesList);
   }
+
+  interactionRow.append(controlsLeft, abilitiesZone, hintButton);
+  copy.appendChild(interactionRow);
 
   selectedHero.append(media, copy);
 
