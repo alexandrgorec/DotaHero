@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DotaHero</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <main>
+        <section id="gallery-view" class="panel">
+          <div class="toolbar">
+            <div>
+              <h2>Все герои</h2>
+              <p id="hero-count" class="muted">Загрузка списка героев...</p>
+            </div>
+            <button id="random-button" class="accent-button" type="button" disabled>
+              Рандом
+            </button>
+          </div>
+          <p id="status-message" class="status" role="status" aria-live="polite"></p>
+          <div id="hero-grid" class="hero-grid" aria-live="polite"></div>
+        </section>
+
+        <section id="detail-view" class="panel detail-view" hidden>
+          <div class="detail-actions">
+            <button id="back-button" class="ghost-button" type="button">Назад к списку</button>
+            <button id="hardcore-button" class="ghost-button" type="button">Добавить хардкора</button>
+            <button id="hint-button" class="hint-button" type="button" hidden>Подсказка</button>
+          </div>
+          <p id="hardcore-text" class="hardcore-text" hidden></p>
+          <article id="selected-hero" class="selected-hero"></article>
+        </section>
+      </main>
+    </div>
+
+    <noscript>Для работы приложения нужно включить JavaScript.</noscript>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

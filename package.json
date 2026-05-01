@@ -1,0 +1,17 @@
+{
+  "name": "dota-hero",
+  "version": "1.0.0",
+  "description": "Client-server app for choosing Dota 2 heroes.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "sync:heroes": "node scripts/sync-heroes.mjs",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
