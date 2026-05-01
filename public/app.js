@@ -6,6 +6,7 @@ const backButton = document.querySelector("#back-button");
 const hintButton = document.querySelector("#hint-button");
 const hardcoreButton = document.querySelector("#hardcore-button");
 const hardcoreText = document.querySelector("#hardcore-text");
+const detailHeroTitle = document.querySelector("#detail-hero-title");
 const selectedHero = document.querySelector("#selected-hero");
 const heroCount = document.querySelector("#hero-count");
 const statusMessage = document.querySelector("#status-message");
@@ -172,6 +173,7 @@ function renderGallery() {
 
   galleryView.hidden = false;
   detailView.hidden = true;
+  selectedHero.replaceChildren();
   document.body.classList.remove("detail-mode");
   selectedHeroData = null;
   hiddenAbilityIndexes = [];
@@ -180,6 +182,7 @@ function renderGallery() {
   selectedHeroDefaultImage = "";
   selectedHeroDefaultAlt = "";
   selectedPreviewAbilityIndex = null;
+  detailHeroTitle.textContent = "";
   hintButton.disabled = true;
   hintButton.hidden = false;
   hintButton.textContent = "Подсказка";
@@ -274,11 +277,7 @@ function renderHeroDetail(hero) {
 
   const copy = document.createElement("div");
   copy.className = "selected-hero-copy";
-
-  const title = document.createElement("h2");
-  title.textContent = hero.nameRu;
-
-  copy.appendChild(title);
+  detailHeroTitle.textContent = hero.nameRu;
 
   if (Array.isArray(hero.abilities) && hero.abilities.length) {
     const abilitiesRow = document.createElement("div");
