@@ -19,35 +19,69 @@ async function fileCount(dirPath) {
   }
 }
 
-async function dataIsComplete() {
+async function readHeroes() {
   try {
     const raw = await fs.readFile(heroesFile, "utf-8");
     const heroes = JSON.parse(raw);
-
-    if (!Array.isArray(heroes) || heroes.length === 0) {
-      return false;
-    }
-
-    const hasAbilitiesInData = heroes.some((hero) => Array.isArray(hero.abilities) && hero.abilities.length > 0);
-
-    if (!hasAbilitiesInData) {
-      return false;
-    }
-
-    const [heroImageCount, abilityImageCount] = await Promise.all([
-      fileCount(heroesDir),
-      fileCount(abilitiesDir)
-    ]);
-
-    return heroImageCount >= heroes.length && abilityImageCount > 0;
+    return Array.isArray(heroes) ? heroes : [];
   } catch {
-    return false;
+    return [];
   }
 }
 
-if (await dataIsComplete()) {
-  console.log("Hero data already present, skipping sync.");
-} else {
+async function collectStats() {
+  const heroes = await readHeroes();
+  const heroesWithAbilities = heroes.filter((hero) => Array.isArray(hero.abilities) && hero.abilities.length > 0).length;
+  const [heroImageCount, abilityImageCount] = await Promise.all([fileCount(heroesDir), fileCount(abilitiesDir)]);
+
+  return {
+    heroesCount: heroes.length,
+    heroesWithAbilities,
+    heroImageCount,
+    abilityImageCount
+  };
+}
+
+function dataIsComplete(stats) {
+  return (
+    stats.heroesCount > 0 &&
+    stats.heroesWithAbilities > 0 &&
+    stats.heroImageCount >= stats.heroesCount &&
+    stats.abilityImageCount > 0
+  );
+}
+
+function printStats(label, stats) {
+  console.log(
+    `${label}: heroes=${stats.heroesCount}, heroesWithAbilities=${stats.heroesWithAbilities}, heroImages=${stats.heroImageCount}, abilityImages=${stats.abilityImageCount}`
+  );
+}
+
+async function ensureData() {
+  const before = await collectStats();
+  printStats("Current data", before);
+
+  if (dataIsComplete(before)) {
+    console.log("Hero data already present, skipping sync.");
+    return;
+  }
+
   console.log("Hero data or ability assets are missing. Running sync...");
   await syncHeroes();
+
+  const after = await collectStats();
+  printStats("After sync", after);
+
+  if (!dataIsComplete(after)) {
+    throw new Error(
+      "Hero data is still incomplete after sync. Verify that the latest sync script is deployed and outbound network to data sources is available."
+    );
+  }
+}
+
+try {
+  await ensureData();
+} catch (error) {
+  console.error(error.message);
+  process.exitCode = 1;
 }

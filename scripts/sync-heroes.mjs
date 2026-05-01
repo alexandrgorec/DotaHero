@@ -218,7 +218,9 @@ export async function main() {
     .sort((left, right) => left.nameRu.localeCompare(right.nameRu, "ru"));
 
   await fs.writeFile(heroesFile, JSON.stringify(heroes, null, 2) + "\n", "utf-8");
+  const heroesWithAbilities = heroes.filter((hero) => Array.isArray(hero.abilities) && hero.abilities.length > 0).length;
   console.log(`Saved ${heroes.length} heroes to ${heroesFile}`);
+  console.log(`Heroes with abilities: ${heroesWithAbilities}/${heroes.length}`);
 }
 
 const executedAsScript = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
